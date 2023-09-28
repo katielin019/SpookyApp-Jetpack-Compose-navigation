@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
+import com.zk.spookynavigation.R
 import com.zk.spookynavigation.viewModels.MainViewModel
 
 @Composable
@@ -11,8 +12,8 @@ fun TabLayout(viewModel: MainViewModel) {
     val tabIndex = viewModel.tabIndex.observeAsState()
 }
 
-sealed class NavigationItems(val route: String, val label: String, var icon: Int) {
-    object Library: NavigationItems("library_view_route", "Library", R.drawable.ic_books)
+sealed class NavigationItem(val route: String, val label: String, var icon: Int) {
+    object Library: NavigationItem("library_view_route", "Library", R.drawable.ic_book_2)
 }
 
 @Composable
