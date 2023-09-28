@@ -1,16 +1,19 @@
 package com.zk.spookynavigation.views
 
+import androidx.activity.ComponentActivity
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.*
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.zk.spookynavigation.R
 import com.zk.spookynavigation.viewModels.MainViewModel
-
-@Composable
-fun TabLayout(viewModel: MainViewModel) {
-    val tabIndex = viewModel.tabIndex.observeAsState()
-}
 
 sealed class NavigationItem(val route: String, val label: String, var icon: Int) {
     object LibraryView: NavigationItem("library_view_route", "Library", R.drawable.ic_book_2)
@@ -20,49 +23,87 @@ sealed class NavigationItem(val route: String, val label: String, var icon: Int)
 
 @Composable
 fun AppView() {
-    val nav = rememberNavController()
+    val navController = rememberNavController()
 
+    Scaffold(
+        bottomBar = { BottomNavBar(navController) },
+        bodyContent = { padding ->
+            Box(modifier = Modifier.padding(padding)) {
+                Navigation(navController = navController)
+            }
+        })
 }
 
+//@Composable
+//fun MainScreen() {
+//    val navController = rememberNavController()
+//    Scaffold(
+//        topBar = { TopBar() },
+//        bottomBar = { BottomNavigationBar(navController) },
+//        content = { padding ->
+//            Box(modifier = Modifier.padding(padding)) {
+//                Navigation(navController = navController)
+//            }
+//        },
+//        backgroundColor = colorResource(R.color.colorPrimaryDark) // Set background color to avoid the white flashing when you switch between screens
+//    )
+//}
+
+@Composable
+fun BottomNavBar(navController: NavController) {
+    val items = listOf(
+        NavigationItem.LibraryView,
+        NavigationItem.NewBookView,
+        NavigationItem.ChartsView
+    )
+
+    BottomNavigation() {
+        val navBackStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destinaton?.route
+
+        items.forEach { item ->
+            BottomNavigationItem(
+                icon = { Icon(painterResource(id = item.icon), contentDescription = item.label) },
+                label = { Text(text = item.label) },
+                alwaysShowLabel = true,
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+                        navController.graph.startDestinationRoute?.let { route ->
+                            popUpTo(route) {
+                                saveState = true
+                            }
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
+        }
+    }
+}
 @Composable
 private fun NavConfiguration(navController: NavHostController) {
 
 }
-
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.fillMaxWidth
-//import androidx.compose.material.*
-//import androidx.compose.material.icons.Icons
-//import androidx.compose.material.icons.filled.*
-//import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.livedata.observeAsState
-//import androidx.compose.ui.Modifier
-//import com.tomerpacific.jetpackcomposetabs.MainViewModel
-//
 //@Composable
-//fun TabLayout(viewModel: MainViewModel) {
-//    val tabIndex = viewModel.tabIndex.observeAsState()
-//    Column(modifier = Modifier.fillMaxWidth()) {
-//        TabRow(selectedTabIndex = tabIndex.value!!) {
-//            viewModel.tabs.forEachIndexed { index, title ->
-//                Tab(text = { Text(title) },
-//                    selected = tabIndex.value!! == index,
-//                    onClick = { viewModel.updateTabIndex(index) },
-//                    icon = {
-//                        when (index) {
-//                            0 -> Icon(imageVector = Icons.Default.Home, contentDescription = null)
-//                            1 -> Icon(imageVector = Icons.Default.Info, contentDescription = null)
-//                            2 -> Icon(imageVector = Icons.Default.Settings, contentDescription = null)
-//                        }
-//                    }
-//                )
-//            }
+//fun Navigation(navController: NavHostController) {
+//    NavHost(navController, startDestination = NavigationItem.Home.route) {
+//        composable(NavigationItem.Home.route) {
+//            HomeScreen()
 //        }
-//
-//        when (tabIndex.value) {
-//            0 -> HomeScreen(viewModel = viewModel)
-//            1 -> AboutScreen(viewModel = viewModel)
-//            2 -> SettingsScreen(viewModel = viewModel)
+//        composable(NavigationItem.Music.route) {
+//            MusicScreen()
+//        }
+//        composable(NavigationItem.Movies.route) {
+//            MoviesScreen()
+//        }
+//        composable(NavigationItem.Books.route) {
+//            BooksScreen()
+//        }
+//        composable(NavigationItem.Profile.route) {
+//            ProfileScreen()
 //        }
 //    }
 //}
+//

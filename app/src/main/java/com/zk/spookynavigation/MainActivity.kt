@@ -3,11 +3,12 @@ package com.zk.spookynavigation
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.setContent
+import com.zk.spookynavigation.ui.NavigationTestTheme
 import com.zk.spookynavigation.viewModels.Library
 import com.zk.spookynavigation.viewModels.MainViewModel
-import com.zk.spookynavigation.views.TabLayout
-import com.zk.spookynavigation.ui.NavigationTestTheme
+import com.zk.spookynavigation.views.AppView
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             NavigationTestTheme {
-                TabLayout(viewModel = viewModel)
+                AppView()
             }
         }
     }
