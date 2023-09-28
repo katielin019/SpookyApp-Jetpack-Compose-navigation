@@ -1,10 +1,34 @@
-package com.zk.spookynavigation.Views
+package com.zk.spookynavigation.views
 
 import androidx.compose.runtime.Composable
-import com.zk.spookynavigation.ViewModels.Library
+import androidx.compose.runtime.livedata.observeAsState
+//import androidx.compose.material.Icon
+//import androidx.compose.material.icons.Icons
+//import androidx.compose.material.icons.filled.*
+import androidx.navigation.NavHostController
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.navigation.compose.*
+import com.zk.spookynavigation.viewModels.MainViewModel
 
 @Composable
-fun TabLayout(viewModel: Library) {
+fun TabLayout(viewModel: MainViewModel) {
+    val tabIndex = viewModel.tabIndex.observeAsState()
+}
+
+sealed class NavigationItems(val route: String, val label: String, val icon: Boolean) {
+    object Library: NavigationItems("library_view_route", "Library", false)
+}
+
+@Composable
+fun AppView() {
+    val nav = rememberNavController()
+
+}
+
+@Composable
+private fun NavConfiguration(navController: NavHostController) {
 
 }
 

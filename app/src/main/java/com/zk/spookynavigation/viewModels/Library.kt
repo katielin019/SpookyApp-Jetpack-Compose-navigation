@@ -1,4 +1,4 @@
-package com.zk.spookynavigation.ViewModels
+package com.zk.spookynavigation.viewModels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
