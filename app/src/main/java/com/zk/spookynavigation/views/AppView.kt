@@ -13,7 +13,9 @@ fun TabLayout(viewModel: MainViewModel) {
 }
 
 sealed class NavigationItem(val route: String, val label: String, var icon: Int) {
-    object Library: NavigationItem("library_view_route", "Library", R.drawable.ic_book_2)
+    object LibraryView: NavigationItem("library_view_route", "Library", R.drawable.ic_book_2)
+    object NewBookView: NavigationItem("new_book_view_route", "New Book", R.drawable.ic_add)
+    object ChartsView: NavigationItem("charts_view_route", "Charts", R.drawable.ic_bar_chart)
 }
 
 @Composable
